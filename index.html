@@ -5,31 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <link rel="stylesheet" href="index.css">
+    <style>
+        .column {
+           float: left;
+           width: 33%;
+           padding: 10px;
+           box-sizing: border-box;
+          
+        }
+        .row::after {
+           content: "";
+           clear: both;
+           display: table;
+        }
+    </style>
 </head>
 <body>
-    <div class="calculator">
-        <div id="calculator-output" class="calculator__output">0</div>
-        <div class="calculator__keys">
-            <button class="calculator__key calculator__key--operator" onclick="appendOperator('+')">+</button>
-            <button class="calculator__key calculator__key--operator" onclick="appendOperator('-')">-</button>
-            <button class="calculator__key calculator__key--operator" onclick="appendOperator('*')">&times;</button>
-            <button class="calculator__key calculator__key--operator" onclick="appendOperator('/')">÷</button>
-            <button class="calculator__key" onclick="appendToDisplay('7')">7</button>
-            <button class="calculator__key" onclick="appendToDisplay('8')">8</button>
-            <button class="calculator__key" onclick="appendToDisplay('9')">9</button>
-            <button class="calculator__key" onclick="appendToDisplay('4')">4</button>
-            <button class="calculator__key" onclick="appendToDisplay('5')">5</button>
-            <button class="calculator__key" onclick="appendToDisplay('6')">6</button>
-            <button class="calculator__key" onclick="appendToDisplay('1')">1</button>
-            <button class="calculator__key" onclick="appendToDisplay('2')">2</button>
-            <button class="calculator__key" onclick="appendToDisplay('3')">3</button>
-            <button class="calculator__key" onclick="appendToDisplay('0')">0</button>
-            <button class="calculator__key" onclick="appendToDisplay('.')">.</button>
-            <button class="calculator__key" onclick="clearDisplay()">AC</button>
-            <button class="calculator__key calculator__key--enter" onclick="calculate()">=</button>
+    <div class="row">
+        <div class="column">          
+            <section>
+             <h2>Arithmetic</h2>
+             <input id="operand1"/> 
+             <label>+</label>
+             <input id="operand2"/>
+             <button onclick="add()">=</button>
+             <label id="sum"></label>  
+         </section>
+         </div>
+        <div class="column">
+            <div class="calculator">
+                <div id="calculator-output" class="calculator__output">0</div>
+                <div class="calculator__keys">
+                    <button class="calculator__key calculator__key--operator" onclick="appendOperator('+')">+</button>
+                    <button class="calculator__key calculator__key--operator" onclick="appendOperator('-')">-</button>
+                    <button class="calculator__key calculator__key--operator" onclick="appendOperator('*')">&times;</button>
+                    <button class="calculator__key calculator__key--operator" onclick="appendOperator('/')">÷</button>
+                    <button class="calculator__key" onclick="appendToDisplay('7')">7</button>
+                    <button class="calculator__key" onclick="appendToDisplay('8')">8</button>
+                    <button class="calculator__key" onclick="appendToDisplay('9')">9</button>
+                    <button class="calculator__key" onclick="appendToDisplay('4')">4</button>
+                    <button class="calculator__key" onclick="appendToDisplay('5')">5</button>
+                    <button class="calculator__key" onclick="appendToDisplay('6')">6</button>
+                    <button class="calculator__key" onclick="appendToDisplay('1')">1</button>
+                    <button class="calculator__key" onclick="appendToDisplay('2')">2</button>
+                    <button class="calculator__key" onclick="appendToDisplay('3')">3</button>
+                    <button class="calculator__key" onclick="appendToDisplay('0')">0</button>
+                    <button class="calculator__key" onclick="appendToDisplay('.')">.</button>
+                    <button class="calculator__key" onclick="clearDisplay()">AC</button>
+                    <button class="calculator__key calculator__key--enter" onclick="calculate()">=</button>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <section>
+                <h2>Prime check</h2>                
+                <label>Number to test:</label>
+                <input id="numberToTest"/>
+                <button onclick="isPrime()">Check</button>
+                <label id="primeCheckResult"></label>  
+            </section>           
         </div>
     </div>
-
     <script>
         let display = document.getElementById("calculator-output");
         
@@ -61,6 +97,24 @@
             } catch (error) {
                 display.textContent = "Error";
             }
+        }
+
+        async function add() {
+            const operand1Input = document.getElementById("operand1");
+            const operand2Input = document.getElementById("operand2");
+            let n = operand1Input.value;
+            let m = operand2Input.value;
+            const response = await fetch("https://arithmetic-service-rohith-manjunatha.onrender.com/add/" + n + "/" + m);
+            const sum = await response.json();
+            document.getElementById("sum").innerText = sum;
+        }
+
+        async function isPrime() {
+            const numberToTest = document.getElementById("numberToTest");            
+            let n = numberToTest.value;            
+            const response = await fetch("https://primes-service-romanju.onrender.com/primes/" + n);
+            const result = await response.json();
+            document.getElementById("primeCheckResult").innerText = result;
         }
     </script>
 </body>

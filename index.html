@@ -130,7 +130,7 @@
             const cipherText = document.getElementById("cipherText").value;
             console.log(cipherText)
             //since we need to shift it 3 times by defualt
-            const response = await fetch("http://localhost:8000/ciphers/caesar/" + cipherText + "/3");
+            const response = await fetch("https://ciphers-service-rohith-manjunatha.onrender.com/ciphers/caesar/" + cipherText + "/3");
             const result = await response;
             console.log(result);
             document.getElementById("cipherResult").innerHTML = result;

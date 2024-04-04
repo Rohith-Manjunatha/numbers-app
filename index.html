@@ -21,6 +21,9 @@
     </style>
 </head>
 <body>
+    <div class="row" id="login">
+
+    </div>
     <div class="row">
         <div class="column">          
             <section>
@@ -75,7 +78,10 @@
             </section>           
         </div>
     </div>
+    <script src="configuration.js"></script>
     <script>
+        let host = configuration.hosts;
+        displayLogin();
         let display = document.getElementById("calculator-output");
         
         function appendToDisplay(value) {
@@ -120,8 +126,10 @@
 
         async function isPrime() {
             const numberToTest = document.getElementById("numberToTest");            
-            let n = numberToTest.value;            
-            const response = await fetch("https://primes-service-romanju.onrender.com/primes/" + n);
+            let n = numberToTest.value;     
+            const header = { 'Authorization': `Bearer ${configuration.token}` };
+            const response = await fetch(`${hosts.primes_service}/primes/${n}`, { header })       
+            // const response = await fetch("https://primes-service-romanju.onrender.com/primes/" + n);
             const result = await response.json();
             document.getElementById("primeCheckResult").innerText = result;
         }
